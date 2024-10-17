@@ -11,12 +11,20 @@ namespace UnityWeld.Binding
     [HelpURL("https://github.com/Real-Serious-Games/Unity-Weld")]
     public abstract class AbstractMemberBinding : MonoBehaviour, IMemberBinding
     {
+        private bool _initialized;
         /// <summary>
         /// Initialise this binding. Used when we first start the scene.
         /// Detaches any attached view models, finds available view models afresh and then connects the binding.
         /// </summary>
         public virtual void Init()
         {
+            if (_initialized)
+            {
+                return;
+            }
+
+            _initialized = true;
+            
             Disconnect();
 
             Connect();
@@ -177,6 +185,11 @@ namespace UnityWeld.Binding
         /// </summary>
         protected void Awake()
         {
+            if (_initialized)
+            {
+                return;
+            }
+            
             Init();
         }
 
